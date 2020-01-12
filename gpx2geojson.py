@@ -1,5 +1,5 @@
 import gpxpy
-from umapgeojson import ATMFeature, AEDFeature, FreeWiFiFeature, SSWHFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature
+from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature
 import geojson
 import sys
 import os
@@ -14,22 +14,28 @@ def getFeatures( gpx ):
         if waypoint.name == 'aed' or waypoint.name == 'AED':
             aed = AEDFeature(waypoint.longitude, waypoint.latitude)
             features.append(aed.getGeoJSON())
-        if waypoint.name == 'wifi' or waypoint.name == 'WiFi':
+        if waypoint.name == '病院':
+            hospital = HospitalFeature(waypoint.longitude, waypoint.latitude)
+            features.append(hospital.getGeoJSON())
+        if waypoint.name == 'freewifi' or waypoint.name == 'FreeWiFi':
             wifi = FreeWiFiFeature(waypoint.longitude, waypoint.latitude)
             features.append(wifi.getGeoJSON())
-        if waypoint.name == 'sswh' or waypoint.name == 'SSWH':
+        if waypoint.name == '災害時帰宅支援ステーション':
             sswh = SSWHFeature(waypoint.longitude, waypoint.latitude)
             features.append(sswh.getGeoJSON())
-        if waypoint.name == 'bench' or waypoint.name == 'BENCH':
+        if waypoint.name == 'セーフティステーション':
+            ss = SSFeature(waypoint.longitude, waypoint.latitude)
+            features.append(ss.getGeoJSON())
+        if waypoint.name == 'ベンチ':
             bench = BenchFeature(waypoint.longitude, waypoint.latitude)
             features.append(bench.getGeoJSON())
-        if waypoint.name == 'vm' or waypoint.name == 'VM':
+        if waypoint.name == '自販機':
             vm = VMFeature(waypoint.longitude, waypoint.latitude)
             features.append(vm.getGeoJSON())
-        if waypoint.name == 'vmad' or waypoint.name == 'VMAD':
+        if waypoint.name == '災害対応自販機':
             vmad = VMADFeature(waypoint.longitude, waypoint.latitude)
             features.append(vmad.getGeoJSON())
-        if waypoint.name == 'Toilet':
+        if waypoint.name == 'トイレ':
             toilet = ToiletFeature(waypoint.longitude, waypoint.latitude)
             features.append(toilet.getGeoJSON())
     return features
