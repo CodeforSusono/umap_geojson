@@ -5,7 +5,7 @@ class uMapProperties:
     """
     uMapに登録した地物をGeoJSON形式にした際propertiesに登録される情報を保持するクラス
     """
-    def __init__(self, name = None, desc = None, color = 'Yellow', showLabel = None, iconUrl = None):
+    def __init__(self, name = None, desc = None, color = 'Yellow', showLabel = None, iconUrl = None, iconClass = None, weight = None):
         """
         Parameters
         ----------
@@ -14,12 +14,15 @@ class uMapProperties:
         color : シェイプ表示プロパティの色
         showLabel : ???（いつもnullが指定されている）
         iconUrl : 表示するアイコンシンボルファイルのURL
+        weight : LineString等の線の太さ
         """
         self.name = name
         self.desc = desc
         self.color = color
         self.showLabel = showLabel
         self.iconUrl = iconUrl
+        self.iconClass = iconClass
+        self.weight = weight
 
     def getDict(self):
         """
@@ -34,10 +37,15 @@ class uMapProperties:
         _umap_options['showLabel']=self.showLabel
         if self.iconUrl is not None:
             _umap_options['iconUrl']=self.iconUrl
+        if self.iconClass is not None:
+            _umap_options['iconClass']=self.iconClass
+        if self.weight is not None:
+            _umap_options['weight']=self.weight
         properties=dict()
         properties['_umap_options'] = _umap_options
         properties['name'] = self.name
-        properties['description'] = self.desc
+        if self.desc is not None:
+            properties['description'] = self.desc
         return properties
     
     def getJSON(self):
@@ -87,7 +95,7 @@ class ATMFeature(uMapFeature):
     desc='店名:\n利用時間:'
     color='Green'
     showLabel=None
-    iconUrl='/uploads/pictogram/museum-24_1.png'
+    iconUrl='/uploads/pictogram/bank-24_1.png'
 
     def __init__(self, longitude, latitude):
         """
@@ -278,3 +286,102 @@ class ToiletFeature(uMapFeature):
         """
         umap_prop = uMapProperties(name=ToiletFeature.name, desc=ToiletFeature.desc, color=ToiletFeature.color, showLabel=ToiletFeature.showLabel,  iconUrl=ToiletFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
+
+class InfoFeature(uMapFeature):
+    """
+    補足情報を保持するクラス
+    """
+    color='Yellow'
+    iconUrl='/uploads/pictogram/religious-jewish-24.png'
+    iconClass='Drop'
+
+    def __init__(self, name, longitude, latitude):
+        """
+        Parameters
+        ----------
+        name : 補足情報
+        longitude : 地物の経度
+        latitude : 地物の緯度
+        """
+        umap_prop = uMapProperties(name=name, color=InfoFeature.color, iconUrl=InfoFeature.iconUrl, iconClass=InfoFeature.iconClass)
+        super().__init__(longitude, latitude, umap_prop)
+
+class uMapLineString:
+    """
+    uMap用LineStringの情報を保持するクラス
+    """
+    def __init__(self, section, umap_properties):
+        """
+        Parameters
+        ----------
+        section : array of tuple
+            地点情報{'info':info, 'time':time, 'point':(longitude, latitude)}の配列
+        uMapProperties : dict
+            LineStringのProperties情報
+        """
+        self.section = section
+        self.uMapProperties = umap_properties
+            
+    def getGeoJSON(self):
+        """
+        uMap用Featureの情報を保持するGeoJSONオブジェクトを返す
+        Returns
+        -------
+        feature : GeoJSON
+            uMap用Featureの情報
+        """
+        line= geojson.LineString((self.section[0].get('point'), self.section[1].get('point')))
+        umap_prop = self.uMapProperties.getDict()
+        feature = geojson.Feature(geometry=line,properties=umap_prop)
+        return feature
+
+class SideWalkFeature(uMapLineString):
+    """
+    歩道の情報を保持するクラス
+    """
+    name='歩道'
+    color='Sienna'
+    weight='5'
+
+    def __init__(self, section):
+        """
+        Parameters
+        ----------
+        section : 開始地点、終了地点の時間、緯度、経度
+        """
+        umap_prop = uMapProperties(name=SideWalkFeature.name,color=SideWalkFeature.color,weight=SideWalkFeature.weight)
+        super().__init__(section, umap_prop)
+
+class BlockFenceFeature(uMapLineString):
+    """
+    ブロック塀の情報を保持するクラス
+    """
+    name='ブロック塀'
+    color='Crimson'
+    weight='5'
+
+    def __init__(self, section):
+        """
+        Parameters
+        ----------
+        section : 開始地点、終了地点の時間、緯度、経度
+        """
+        umap_prop = uMapProperties(name=BlockFenceFeature.name,color=BlockFenceFeature.color,weight=BlockFenceFeature.weight)
+        super().__init__(section, umap_prop)
+
+class StoneWallFeature(uMapLineString):
+    """
+    石塀の情報を保持するクラス
+    """
+    name='石塀'
+    color='OrangeRed'
+    weight='5'
+
+    def __init__(self, section):
+        """
+        Parameters
+        ----------
+        section : 開始地点、終了地点の時間、緯度、経度
+        """
+        umap_prop = uMapProperties(name=StoneWallFeature.name,color=StoneWallFeature.color,weight=StoneWallFeature.weight)
+        super().__init__(section, umap_prop)

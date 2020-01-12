@@ -1,5 +1,5 @@
 import gpxpy
-from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature
+from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature, InfoFeature, SideWalkFeature, BlockFenceFeature, StoneWallFeature
 import geojson
 import sys
 import os
@@ -7,6 +7,9 @@ import os
 def getFeatures( gpx ):
     # gpxファイルに定義されたウエイポイントnameから必要な地物のみgeojsonオブジェクトに変換
     features = []
+    side_walk_section = []
+    block_fence_section = []
+    stone_wall_section = []
     for waypoint in gpx.waypoints:
         if waypoint.name == 'atm' or waypoint.name == 'ATM':
             atm = ATMFeature(waypoint.longitude, waypoint.latitude)
@@ -38,6 +41,57 @@ def getFeatures( gpx ):
         if waypoint.name == 'トイレ':
             toilet = ToiletFeature(waypoint.longitude, waypoint.latitude)
             features.append(toilet.getGeoJSON())
+        if waypoint.name.startswith('高さ') or waypoint.name.startswith('段差')  or waypoint.name.startswith('幅') :
+            info = InfoFeature(waypoint.name, waypoint.longitude, waypoint.latitude)
+            features.append(info.getGeoJSON())
+        if waypoint.name == '歩道開始':
+            if len(side_walk_section)!=0:
+                print('Warning:{0}地点の情報が連続しているため処理できません.前回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                side_walk_section=[]
+            else:
+                starting_point = { 'info':'start', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                side_walk_section.append(starting_point)
+        if waypoint.name == '歩道終了':
+            if len(side_walk_section)!=1 or side_walk_section[0].get('info')!='start':
+                print('Warning:歩道開始地点の情報がない状態で{0}地点の情報が記録されているため処理できません.今回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                side_walk_section=[]
+            else:
+                ending_point = {'info':'end', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                side_walk_section.append(ending_point)
+                side_walk = SideWalkFeature( side_walk_section )
+                features.append(side_walk.getGeoJSON())
+        if waypoint.name == 'ブロック塀開始':
+            if len(block_fence_section)!=0:
+                print('Warning:{0}地点の情報が連続しているため処理できません.前回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                block_fence_section=[]
+            else:
+                starting_point = { 'info':'start', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                block_fence_section.append(starting_point)
+        if waypoint.name == 'ブロック塀終了':
+            if len(block_fence_section)!=1 or block_fence_section[0].get('info')!='start':
+                print('Warning:ブロック塀開始地点の情報がない状態で{0}地点の情報が記録されているため処理できません.今回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                block_fence_section=[]
+            else:
+                ending_point = {'info':'end', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                block_fence_section.append(ending_point)
+                block_fence = BlockFenceFeature( block_fence_section )
+                features.append(block_fence.getGeoJSON())
+        if waypoint.name == '石塀開始':
+            if len(stone_wall_section)!=0:
+                print('Warning:{0}地点の情報が連続しているため処理できません.前回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                stone_wall_section=[]
+            else:
+                starting_point = { 'info':'start', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                stone_wall_section.append(starting_point)
+        if waypoint.name == '石塀終了':
+            if len(stone_wall_section)!=1 or stone_wall_section[0].get('info')!='start':
+                print('Warning:石塀開始地点の情報がない状態で{0}地点の情報が記録されているため処理できません.今回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                stone_wall_section=[]
+            else:
+                ending_point = {'info':'end', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                stone_wall_section.append(ending_point)
+                stone_wall = StoneWallFeature( stone_wall_section )
+                features.append(stone_wall.getGeoJSON())
     return features
 
 def getOutputFilename(filename):
