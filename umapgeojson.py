@@ -329,7 +329,7 @@ class uMapLineString:
         """
         Parameters
         ----------
-        section : array of tuple
+        section : array of dictionary
             地点情報{'info':info, 'time':time, 'point':(longitude, latitude)}の配列
         uMapProperties : dict
             LineStringのProperties情報
@@ -345,9 +345,12 @@ class uMapLineString:
         feature : GeoJSON
             uMap用Featureの情報
         """
-        line= geojson.LineString((self.section[0].get('point'), self.section[1].get('point')))
+        points = []
+        for a_section in self.section:
+            points.append(a_section.get('point'))
+        line= geojson.LineString( points )
         umap_prop = self.uMapProperties.getDict()
-        feature = geojson.Feature(geometry=line,properties=umap_prop)
+        feature = geojson.Feature(geometry=line, properties=umap_prop)
         return feature
 
 class SideWalkFeature(uMapLineString):
@@ -416,4 +419,22 @@ class BridgeFeature(uMapLineString):
         section : 開始地点、終了地点の時間、緯度、経度
         """
         umap_prop = uMapProperties(name=BridgeFeature.name,color=BridgeFeature.color,weight=BridgeFeature.weight)
+        super().__init__(section, umap_prop)
+
+class TrajectoryFeature(uMapLineString):
+    """
+    移動軌跡の情報を保持するクラス
+    """
+    name='移動軌跡'
+    weight='5'
+    color='Black'
+    
+    def __init__(self, section):
+        """
+        Parameters
+        ----------
+        section : 開始地点、終了地点の時間、緯度、経度情報を持つ辞書の配列
+        """
+        desc="開始時刻：{0}\n終了時刻：{1}".format(section[0].get('time'),section[-1].get('time'))
+        umap_prop = uMapProperties(name=TrajectoryFeature.name, desc=desc, color=TrajectoryFeature.color, weight=TrajectoryFeature.weight)
         super().__init__(section, umap_prop)

@@ -1,5 +1,5 @@
 import gpxpy
-from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature, InfoFeature, SideWalkFeature, BlockFenceFeature, StoneWallFeature, BridgeFeature, UnSupportedFeature
+from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature, InfoFeature, SideWalkFeature, BlockFenceFeature, StoneWallFeature, BridgeFeature, UnSupportedFeature, TrajectoryFeature
 import geojson
 import sys
 import os
@@ -130,6 +130,14 @@ def getFeatures( gpx ):
             continue
         other = UnSupportedFeature(waypoint.name, waypoint.longitude, waypoint.latitude)
         features.append(other.getGeoJSON())
+    # 移動経路
+    for track in gpx.tracks:
+        for segment in track.segments:
+            trk_section=[]
+            for point in segment.points:
+                trk_section.append({'info':point.elevation, 'time':point.time,'point':(point.longitude, point.latitude)})
+            route = TrajectoryFeature(trk_section)
+            features.append(route.getGeoJSON())
     return features
 
 def getOutputFilename(filename):
