@@ -5,12 +5,13 @@ class uMapProperties:
     """
     uMapに登録した地物をGeoJSON形式にした際propertiesに登録される情報を保持するクラス
     """
-    def __init__(self, name = None, desc = None, color = 'Yellow', showLabel = None, iconUrl = None, iconClass = None, weight = None):
+    def __init__(self, name = None, desc = None, time = None, color = 'Yellow', showLabel = None, iconUrl = None, iconClass = None, weight = None):
         """
         Parameters
         ----------
         name : 地物の名称、ラベルとして表示される
         desc : 地物の概要、地物をクリックした際にラベルとともに表示される
+        time : 地物の記録日時、timeとして表示される
         color : シェイプ表示プロパティの色
         showLabel : ???（いつもnullが指定されている）
         iconUrl : 表示するアイコンシンボルファイルのURL
@@ -18,6 +19,7 @@ class uMapProperties:
         """
         self.name = name
         self.desc = desc
+        self.time = time
         self.color = color
         self.showLabel = showLabel
         self.iconUrl = iconUrl
@@ -46,6 +48,8 @@ class uMapProperties:
         properties['name'] = self.name
         if self.desc is not None:
             properties['description'] = self.desc
+        if self.time is not None:
+            properties['time'] = self.time
         return properties
     
     def getJSON(self):
@@ -294,6 +298,27 @@ class InfoFeature(uMapFeature):
         latitude : 地物の緯度
         """
         umap_prop = uMapProperties(name=name, color=InfoFeature.color, iconUrl=InfoFeature.iconUrl, iconClass=InfoFeature.iconClass)
+        super().__init__(longitude, latitude, umap_prop)
+
+class UnSupportedFeature(uMapFeature):
+    """
+    未対応アイテムの情報を保持するクラス
+    """
+    color='Black'
+    iconClass='Ball'
+    desc='未移行アイテム'
+
+    def __init__(self, name, longitude, latitude, time=None):
+        """
+        Parameters
+        ----------
+        name : 補足情報
+        longitude : 地物の経度
+        latitude : 地物の緯度
+        time : 記録日時
+        """
+        desc="{0}\nlongitude:{1}\nlatitude:{2}\ntime:{3}".format(UnSupportedFeature.desc, longitude, latitude, time)
+        umap_prop = uMapProperties(name=name, desc=desc, time =time, color=UnSupportedFeature.color, iconClass=UnSupportedFeature.iconClass)
         super().__init__(longitude, latitude, umap_prop)
 
 class uMapLineString:
