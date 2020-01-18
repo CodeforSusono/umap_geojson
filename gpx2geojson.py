@@ -52,7 +52,7 @@ def getFeatures( gpx ):
             toilet = ToiletFeature(waypoint.longitude, waypoint.latitude)
             features.append(toilet.getGeoJSON())
             continue
-        if waypoint.name.startswith('高さ') or waypoint.name.startswith('段差')  or waypoint.name.startswith('幅') :
+        if waypoint.name.startswith('高さ') or waypoint.name.startswith('段差')  or waypoint.name.startswith('幅') or waypoint.name == '未舗装' or waypoint.name == '歩道なし' :
             info = InfoFeature(waypoint.name, waypoint.longitude, waypoint.latitude)
             features.append(info.getGeoJSON())
             continue
