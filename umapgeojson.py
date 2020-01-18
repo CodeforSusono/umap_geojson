@@ -94,7 +94,6 @@ class ATMFeature(uMapFeature):
     name='ATM'
     desc='店名:\n利用時間:'
     color='Green'
-    showLabel=None
     iconUrl='/uploads/pictogram/bank-24_1.png'
 
     def __init__(self, longitude, latitude):
@@ -104,7 +103,7 @@ class ATMFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=ATMFeature.name, desc=ATMFeature.desc, color=ATMFeature.color, showLabel=ATMFeature.showLabel,  iconUrl=ATMFeature.iconUrl)
+        umap_prop = uMapProperties(name=ATMFeature.name, desc=ATMFeature.desc, color=ATMFeature.color, iconUrl=ATMFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class AEDFeature(uMapFeature):
@@ -114,7 +113,6 @@ class AEDFeature(uMapFeature):
     name='AED'
     desc='店名:\n利用時間:'
     color='Red'
-    showLabel=None
     iconUrl='/uploads/pictogram/hospital-24.png'
 
     def __init__(self, longitude, latitude):
@@ -124,7 +122,7 @@ class AEDFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=AEDFeature.name, desc=AEDFeature.desc, color=AEDFeature.color, showLabel=AEDFeature.showLabel,  iconUrl=AEDFeature.iconUrl)
+        umap_prop = uMapProperties(name=AEDFeature.name, desc=AEDFeature.desc, color=AEDFeature.color, iconUrl=AEDFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class HospitalFeature(uMapFeature):
@@ -134,7 +132,6 @@ class HospitalFeature(uMapFeature):
     name='病院'
     desc='病院名:\n利用時間:'
     color='Red'
-    showLabel=None
     iconUrl='/uploads/pictogram/hospital-24-white.png'
 
     def __init__(self, longitude, latitude):
@@ -144,7 +141,7 @@ class HospitalFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=HospitalFeature.name, desc=HospitalFeature.desc, color=HospitalFeature.color, showLabel=HospitalFeature.showLabel,  iconUrl=HospitalFeature.iconUrl)
+        umap_prop = uMapProperties(name=HospitalFeature.name, desc=HospitalFeature.desc, color=HospitalFeature.color, iconUrl=HospitalFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class FreeWiFiFeature(uMapFeature):
@@ -154,7 +151,6 @@ class FreeWiFiFeature(uMapFeature):
     name='FreeWiFi'
     desc='店名:\n利用時間:'
     color='DarkBlue'
-    showLabel=None
     iconUrl='/uploads/pictogram/golf-24_1.png'
 
     def __init__(self, longitude, latitude):
@@ -164,7 +160,7 @@ class FreeWiFiFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=FreeWiFiFeature.name, desc=FreeWiFiFeature.desc, color=FreeWiFiFeature.color, showLabel=FreeWiFiFeature.showLabel,  iconUrl=FreeWiFiFeature.iconUrl)
+        umap_prop = uMapProperties(name=FreeWiFiFeature.name, desc=FreeWiFiFeature.desc, color=FreeWiFiFeature.color, iconUrl=FreeWiFiFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class SSWHFeature(uMapFeature):
@@ -174,7 +170,6 @@ class SSWHFeature(uMapFeature):
     name='災害時帰宅支援ステーション'
     desc='店名:\n利用時間:'
     color='Crimson'
-    showLabel=None
     iconUrl='/uploads/pictogram/school-24-white.png'
 
     def __init__(self, longitude, latitude):
@@ -184,7 +179,7 @@ class SSWHFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=SSWHFeature.name, desc=SSWHFeature.desc, color=SSWHFeature.color, showLabel=SSWHFeature.showLabel,  iconUrl=SSWHFeature.iconUrl)
+        umap_prop = uMapProperties(name=SSWHFeature.name, desc=SSWHFeature.desc, color=SSWHFeature.color, iconUrl=SSWHFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class SSFeature(uMapFeature):
@@ -194,7 +189,6 @@ class SSFeature(uMapFeature):
     name='セーフティステーション'
     desc='店名:\n利用時間:'
     color='Crimson'
-    showLabel=None
     iconUrl='/uploads/pictogram/school-24.png'
 
     def __init__(self, longitude, latitude):
@@ -204,7 +198,7 @@ class SSFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=SSFeature.name, desc=SSFeature.desc, color=SSFeature.color, showLabel=SSFeature.showLabel,  iconUrl=SSFeature.iconUrl)
+        umap_prop = uMapProperties(name=SSFeature.name, desc=SSFeature.desc, color=SSFeature.color,  iconUrl=SSFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class BenchFeature(uMapFeature):
@@ -214,7 +208,6 @@ class BenchFeature(uMapFeature):
     name='ベンチ'
     desc='補足:'
     color='LimeGreen'
-    showLabel=None
     iconUrl='/uploads/pictogram/star-24-white.png'
 
     def __init__(self, longitude, latitude):
@@ -224,7 +217,7 @@ class BenchFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=BenchFeature.name, desc=BenchFeature.desc, color=BenchFeature.color, showLabel=BenchFeature.showLabel,  iconUrl=BenchFeature.iconUrl)
+        umap_prop = uMapProperties(name=BenchFeature.name, desc=BenchFeature.desc, color=BenchFeature.color, iconUrl=BenchFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class VMFeature(uMapFeature):
@@ -234,7 +227,6 @@ class VMFeature(uMapFeature):
     name='自動販売機'
     desc='種別:\n台数;'
     color='DodgerBlue'
-    showLabel=None
     iconUrl='/uploads/pictogram/cafe-24_1.png'
 
     def __init__(self, longitude, latitude):
@@ -244,7 +236,7 @@ class VMFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=VMFeature.name, desc=VMFeature.desc, color=VMFeature.color, showLabel=VMFeature.showLabel,  iconUrl=VMFeature.iconUrl)
+        umap_prop = uMapProperties(name=VMFeature.name, desc=VMFeature.desc, color=VMFeature.color, iconUrl=VMFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class VMADFeature(uMapFeature):
@@ -254,7 +246,6 @@ class VMADFeature(uMapFeature):
     name='災害対応自動販売機'
     desc='種別:\n台数;'
     color='DodgerBlue'
-    showLabel=None
     iconUrl='/uploads/pictogram/cafe-24.png'
 
     def __init__(self, longitude, latitude):
@@ -264,7 +255,7 @@ class VMADFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=VMADFeature.name, desc=VMADFeature.desc, color=VMADFeature.color, showLabel=VMADFeature.showLabel,  iconUrl=VMADFeature.iconUrl)
+        umap_prop = uMapProperties(name=VMADFeature.name, desc=VMADFeature.desc, color=VMADFeature.color, iconUrl=VMADFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class ToiletFeature(uMapFeature):
@@ -274,7 +265,6 @@ class ToiletFeature(uMapFeature):
     name='トイレ'
     desc='種別:\n補足:'
     color='Yellow'
-    showLabel=None
     iconUrl='/uploads/pictogram/toilets-24.png'
 
     def __init__(self, longitude, latitude):
@@ -284,7 +274,7 @@ class ToiletFeature(uMapFeature):
         longitude : 地物の経度
         latitude : 地物の緯度
         """
-        umap_prop = uMapProperties(name=ToiletFeature.name, desc=ToiletFeature.desc, color=ToiletFeature.color, showLabel=ToiletFeature.showLabel,  iconUrl=ToiletFeature.iconUrl)
+        umap_prop = uMapProperties(name=ToiletFeature.name, desc=ToiletFeature.desc, color=ToiletFeature.color, iconUrl=ToiletFeature.iconUrl)
         super().__init__(longitude, latitude, umap_prop)
 
 class InfoFeature(uMapFeature):
