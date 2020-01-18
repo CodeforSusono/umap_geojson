@@ -375,3 +375,20 @@ class StoneWallFeature(uMapLineString):
         """
         umap_prop = uMapProperties(name=StoneWallFeature.name,color=StoneWallFeature.color,weight=StoneWallFeature.weight)
         super().__init__(section, umap_prop)
+
+class BridgeFeature(uMapLineString):
+    """
+    橋の情報を保持するクラス
+    """
+    name='橋'
+    color='Orange'
+    weight='5'
+
+    def __init__(self, section):
+        """
+        Parameters
+        ----------
+        section : 開始地点、終了地点の時間、緯度、経度
+        """
+        umap_prop = uMapProperties(name=BridgeFeature.name,color=BridgeFeature.color,weight=BridgeFeature.weight)
+        super().__init__(section, umap_prop)

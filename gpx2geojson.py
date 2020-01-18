@@ -1,5 +1,5 @@
 import gpxpy
-from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature, InfoFeature, SideWalkFeature, BlockFenceFeature, StoneWallFeature
+from umapgeojson import ATMFeature, AEDFeature, HospitalFeature, FreeWiFiFeature, SSWHFeature, SSFeature, BenchFeature, VMFeature, VMADFeature, ToiletFeature, InfoFeature, SideWalkFeature, BlockFenceFeature, StoneWallFeature, BridgeFeature
 import geojson
 import sys
 import os
@@ -10,6 +10,7 @@ def getFeatures( gpx ):
     side_walk_section = []
     block_fence_section = []
     stone_wall_section = []
+    bridge_section = []
     for waypoint in gpx.waypoints:
         if waypoint.name == 'atm' or waypoint.name == 'ATM':
             atm = ATMFeature(waypoint.longitude, waypoint.latitude)
@@ -92,6 +93,22 @@ def getFeatures( gpx ):
                 stone_wall_section.append(ending_point)
                 stone_wall = StoneWallFeature( stone_wall_section )
                 features.append(stone_wall.getGeoJSON())
+        if waypoint.name == '橋開始':
+            if len(stone_wall_section)!=0:
+                print('Warning:{0}地点の情報が連続しているため処理できません.前回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                bridge_section=[]
+            else:
+                starting_point = { 'info':'start', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                bridge_section.append(starting_point)
+        if waypoint.name == '橋終了':
+            if len(bridge_section)!=1 or bridge_section[0].get('info')!='start':
+                print('Warning:橋開始地点の情報がない状態で{0}地点の情報が記録されているため処理できません.今回の情報を無視して処理します. waypoint:time:{1},longitude:{2},latitude:{3}'.format(waypoint.name,waypoint.time,waypoint.longitude,waypoint.latitude))
+                bridge_section=[]
+            else:
+                ending_point = {'info':'end', 'time': waypoint.time, 'point':(waypoint.longitude, waypoint.latitude)}
+                bridge_section.append(ending_point)
+                bridge = BridgeFeature( bridge_section )
+                features.append(bridge.getGeoJSON())
     return features
 
 def getOutputFilename(filename):
