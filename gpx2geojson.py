@@ -149,6 +149,21 @@ def getOutputFilename(filename):
         fname = getOutputFilename(newname)
     return fname
 
+def convert(gpx_filename):
+    # gpxファイルの読み込み
+    with open(gpx_filename, 'r', encoding='utf-8') as infile:
+        gpx = gpxpy.parse(infile)
+    
+    # 読み込んだgpxファイルをgeojsonオブジェクトに変換
+    features = getFeatures(gpx)
+    feature_collection = geojson.FeatureCollection(features)
+
+    # geojsonオブジェクトをファイルに出力
+    output_filename = getOutputFilename(gpx_filename)
+    with open(output_filename, 'w') as outfile:
+        geojson.dump(feature_collection, outfile, indent=2)
+
+
 if __name__=='__main__':
     args = sys.argv
     if 2 != len(args):
@@ -161,15 +176,7 @@ if __name__=='__main__':
         print('Error: gpx file %s not found' % argx[1])
         quit()
     
-    # gpxファイルの読み込み
-    with open(args[1], 'r', encoding='utf-8') as infile:
-        gpx = gpxpy.parse(infile)
-    
-    # 読み込んだgpxファイルをgeojsonオブジェクトに変換
-    features = getFeatures(gpx)
-    feature_collection = geojson.FeatureCollection(features)
+    # 変換gpx > geojson
+    convert(args[1])
 
-    # geojsonオブジェクトをファイルに出力
-    output_filename = getOutputFilename(args[1])
-    with open(output_filename, 'w') as outfile:
-        geojson.dump(feature_collection, outfile, indent=2)
+    
